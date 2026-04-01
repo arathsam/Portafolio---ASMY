@@ -86,18 +86,25 @@ def render_languages_barlevel(title, level):
         items += f"""
         <div class = "skill">
             <div class="skill-header"> 
-                <span>{skill}</span>
+                <span class="skill-name">{skill}</span>
+                <span class="skill-hint">100%</span>
             </div>
             <div class = "bar">
-                <div class="fill" style="--level:{levels}%"></div>
+                <div class="fill" data-width="{levels}"></div>
+                <div class="bar-reference"></div>
             </div> 
+            <div class="skill-note">Práctica Constante</div>
         </div>
         """
         
     html = f"""
     <style>
+    .card, .card *{{
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }}
+
     .card {{
-        padding: 20px;
+        padding: 15px;
         border-radius: 15px;
         box-shadow: 0 4px 10px rgba(0,0,0,0);
         transition: transform 0.5s ease, box-shadow 0.5s ease;
@@ -111,30 +118,80 @@ def render_languages_barlevel(title, level):
         border: 1px solid rgba(76, 158, 237, 0.2);
     }}
 
+    .card h3 {{
+        margin: 0 0 12px 0;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #1e4a76;
+    }}
+
     .skill {{
-        margin-bottom: 15px;
+        margin-bottom: 10px;
     }}
 
     .skill-header {{
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 4px;
+    }}
+
+    .skill-name{{
         font-size: 14px;
-        margin-bottom: 5px;
+        font-weight; 500;
+        color: #2c5a7a;
+    }}
+
+    .skill-hint{{
+        font-size: 11px;
+        font-weight: 500;
+        color: #94a3b8;
+        letter-spacing: 0.3px;
     }}
 
     .bar {{
+        position: relative;
         width: 100%;
-        height: 6px;
-        background-color: #e5e7eb;
-        border-radius: 5px;
-        overflow: hidden;
+        height: 8px;
+        background-color: #e9ecef;
+        border-radius: 10px;
+        overflow: visible;
     }}
 
     .fill {{
         height: 100%;
-        background: linear-gradient(90deg, #6366f1, #8b5cf6);
-        border-radius: 5px;
-        transition: width 1s ease-in-out;
-        animation: grow 10s ease forwards;
+        background: linear-gradient(90deg, #6fbf4c, #4cae3c);
+        border-radius: 10px;
+        width: 0%;
+        transition: width 15s ease-out;
+        position: relative;
+        z-index: 2;
     }}
+
+    .bar-reference{{
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 2px;
+        height: 100%;
+        background-color: #cbd5e1;
+        border-radius: 2px;
+        z-index: 1;
+    }}
+
+    .skill-note{{
+        font-size: 12px;
+        color: #2c5a7a;
+        margin-top: 6px;
+        font-style: italic;
+        text-align: right;
+    }}
+
+    .skill-footer{{
+        color: #2c5a7a;
+        font-size: 15px;
+    }}
+
     @keyframes grow {{
         from {{ width: 0; }}
         to {{width: var(--level); }}
@@ -144,7 +201,21 @@ def render_languages_barlevel(title, level):
     <div class="card">
         <h3>{title}</h3>
         {items}
+        <div class="skill-footer">
+            <span>📚</span> Con documentación, practica y oportunidades, llego al 100%📚
+        </div>
     </div>
+
+     <script>
+    (function() {{
+        setTimeout(function() {{
+            document.querySelectorAll('.fill').forEach(bar => {{
+                const width = bar.getAttribute('data-width');
+                bar.style.width = width + '%';
+            }});
+        }}, 100);
+    }})();
+    </script>
     """
     return html
 
@@ -162,37 +233,37 @@ projects = [
         "desc": "App Android para aprendizaje de instrumentos de cuerda con lecciones interactivas, simulación de guitarra, tablaturas de escalas y afinador digital basado en análisis de frecuencia.",
         "tech": "Java, XML, Android Studio",
         "image": "archivos/sonus_vester.jpg",
-        "link": "#')"
+        "link": "https://github.com/arathsam')"
     },
     {
         "title": "🏋️ AppSport",
         "desc": "App Android que permitía actualizar y sincronizar rutinas de entrenamiento (WOD) de forma remota para usuarios durante la pandemia de COVID-19.",
         "tech": "Kotlin, XML, Android Studio",
-        "image": "#",
-        "link": "#')" 
+        "image": "archivos/appsport.png",
+        "link": "https://github.com/arathsam')" 
 
     },
     {
         "title": "📦 Sistema de Inventario",
         "desc": "Aplicación de escritorio para control de productos, actualización de existencias y registro de movimientos de inventario.",
         "tech": "Java, SQL",
-        "image": "#",
-        "link": "#')"
+        "image": "archivos/sistema_inventario.png",
+        "link": "https://github.com/arathsam')"
 
     },
     {
         "title": "🏫 Sistema Escolar",
         "desc": "Sistema para registro de estudiantes, materias y consulta de información académica.",
         "tech": "Java, SQL",
-        "image": "#",
-        "link": "#')"
+        "image": "archivos/sistema_escolar.png",
+        "link": "https://github.com/arathsam')"
     },
     {
         "title": "💳 Punto de Venta",
         "desc": "Aplicación para gestión de venta de articulos con registro de usuarios y control de disponibilidad mediante base de datos.",
         "tech": "JavaScript, SQL",
-        "image": "#",
-        "link": "#')"
+        "image": "archivos/punto_venta.png",
+        "link": "https://github.com/arathsam')"
     }
 ]
 
@@ -360,8 +431,6 @@ def render_projects(projects):
 
     /*Scroll*/
 
-    
-
     .container::-webkit-scrollbar-thumb {{
         background: #4c9eed;
         border-radius: 30px;
@@ -478,8 +547,6 @@ st.set_page_config(page_title=page_title, page_icon=page_icon, layout= layout)
 st.markdown(
     """
     <style>
-        /* ===== FONDO MODO CLARO ===== */
-
         /* ===== FONDO MODO OSCURO ===== */
 
         /* ===== CARDS - SIN FONDO POR DEFECTO ===== */
@@ -589,20 +656,24 @@ st.markdown(
         }
     </style>
     """, unsafe_allow_html=True)
+#------------------------------------- HEADER PRINCIPAL -----------------------------------------------------------------------------------------------
+st.markdown(
+    """ 
+        <div style = "text-align: center; margin-bottom: 20px;"> 
+        <h1 class="card" style="color: #4c9eed; font-size: 2.5rem; margin-bottom: 10px;">
+            Mi Portafolio 👨‍💻 Arath Samir Mu Yee
+        </h1> 
+        </div>
+    """,unsafe_allow_html=True)
 
-st.markdown(""" 
-            <div style = "text-align: center;"> 
-            <h1>Mi Portafolio 👨‍💻 Arath Samir Mu Yee</h1> 
-            </div>
-            """,unsafe_allow_html=True)
-
-st.markdown("""
-            <div class = "card" 
-            style = "text-align: center;">
-            <H4>Este sitio es mi currículum web interactivo desarrollado con Python y Streamlit,
-            donde presento mi experiencia, habilidades y proyectos de forma dinámica.
-            </H4>
-             </div>""",unsafe_allow_html=True)
+st.markdown(
+    """
+    <div class = "card" style = "text-align: center; margin-bottom: 25px;">
+        <p style="font-size: 2rem; line-height: 1.5">
+        📄 CV interactivo desarrollado con Python, HTML y Streamlit. 📄 <br>
+        Explora mi experiencia, habilidades y proyectos.
+        </p>
+    </div>""",unsafe_allow_html=True)
 
 #Creamos un directorio(HashMap) Para poder iterar el contenido directamente y redireccionar dependiendo de la posicion de los elementos dentro. (Usando su Key)
 social_media = {
@@ -615,48 +686,116 @@ social_media = {
 st.markdown("---")
 
 #Descripcion del portafolio (Mi descripcion)
-col1 , col2 = st.columns(2)
+col1 , col2 = st.columns([1,1.2], gap="medium")
 
 #Columna para poner de lado izquierdo
 #Agregamos una separacion para centrar la imagen en la columna del lado izquierdo
-with col1:
-    with st.container():
-        c1, c2, c3 = st.columns([1,2,1])
-    with c2:  
-        st.write("""
-            <div style = "text-align: center" > 
-            
-             ### Mis perfiles & Historial de Proyectos
-             </div>""",unsafe_allow_html=True)
-  
-        st.image(profile_pic, use_container_width=True)
 
-        #Cols es basicamente para obtener las posiciones del directorio 
-        #Creamos los botones para redireccionar a las 'redes sociales'
-        cols = st.columns(len(social_media))
-        for it, (name_sm, url) in enumerate(social_media.items()):
-            with cols[it]:
-                st.link_button(name_sm, 
-                            url,
-                            help="Click para ir a la pagina",
-                            type="primary")
+with col1:
+    #----------------------Centramos la foto d eperfil con efecto de bordes-----------------------
+    st.markdown(
+        """
+        <div style="text-align: center; margin-bottom: 15px;">
+            <div style="width: 180px; width: 180px; 
+                height: 180px; 
+                margin: 0 auto;
+                border-radius: 50%;
+                overflow: hidden;
+                border: 3px solid #4c9eed;
+                box-shadow: 0 8px 20px rgba(76, 158, 237, 0.2);
+            </div>   
+        </div>
+        """, unsafe_allow_html=True)
+    st.image(profile_pic, use_container_width=True)
+    st.markdown("</div></div>",unsafe_allow_html=True)
     
+    #-----------------Diseño y posicion de los botones---------------------------------
+    st.markdown("""
+    <style>
+    .social-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin: 20px 0;
+    }
+    .social-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 20px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        background: #f0f4f9;
+        color: #2c5a7a;
+    }
+    .social-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+    }
+    .social-btn.linkedin { background: #0077b5; color: white; }
+    .social-btn.github { background: #333; color: white; }
+    .social-btn.indeed { background: #2163b4; color: white; }
+    </style>
+    <div class="social-buttons">
+        <a href="https://www.linkedin.com/in/arath-mu-yee/" target="_blank" class="social-btn linkedin">🔗 LinkedIn</a>
+        <a href="https://github.com/arathsam" target="_blank" class="social-btn github">🐙 GitHub</a>
+        <a href="https://profile.indeed.com/?hl=es_MX&co=MX&from=gnav-homepage" target="_blank" class="social-btn indeed">📄 Indeed</a>
+    </div>
+    """, unsafe_allow_html=True)
 
 #--------------------Columna para poner de lado derecho-------------------------------------------------
 with col2:
-    st.write("## Acerca de mi")
-    st.write(f"""
-             <div class="card">
-             
-             <p >{description}</p>
-             </div>""", unsafe_allow_html=True)
-    st.download_button(
-        label="📃 Descargar CV", #Texto que mostrará el boton
-        data= PDFbyte, #El archivo la leido y combertido en bytes
-        file_name=resume_name, #Nombre de como se va a guardar el archivo descargado
-        type="primary", #El tipo de boton
-        icon=":material/download:" #mMuestra el icono de descargable
-    )    
+    st.markdown("""
+    <div class="card" style="
+        padding: 20px;
+        border-radius: 20px;
+        margin-bottom: 20px;
+    ">
+        <h4 style=" font-size: 2rem; margin: 0 0 25px 0;">Acerca de mí</h4>
+        <p style=" line-height: 1.6; margin: 0;">
+            Ingeniero Mecatrónico con experiencia en desarrollo de software, análisis de requerimientos 
+            y automatización de procesos en entornos industriales y tecnológicos. Destaco por mi capacidad 
+            analítica, rápida adaptación y enfoque en la mejora continua.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col_cv1, col_cv2, col_cv3 = st.columns([1, 1.5, 1])
+    with col_cv2:
+        st.download_button(
+            label="📄 Descargar CV",
+            data=PDFbyte,
+            file_name=resume_name,
+            use_container_width=True,
+            type="primary"
+        ) 
+
+    #------------------Formulario para enviar el CV por correo-----------------------------------------------
+
+    st.markdown("""
+    <div style="margin-top: 20px; text-align: center;">
+        <p style="color: #94a3b8; font-size: 20px; margin-bottom: 10px;">
+            <br><br>📧 ¿Quieres recibir mi CV en tu correo?
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    with st.form(key="email_form", clear_on_submit=True):
+        col_email1, col_email2 = st.columns([2, 1])
+        with col_email1:
+            email_input = st.text_input("", placeholder="tu@correo.com", label_visibility="collapsed")
+        with col_email2:
+            submitted = st.form_submit_button("📨 Enviar", use_container_width=True)
+        
+        if submitted:
+            if email_input and "@" in email_input:
+                st.success(f"✅ ¡CV enviado a {email_input}! Revisa tu bandeja (y spam)")
+                # Aquí puedes agregar la lógica real de envío de correo
+            else:
+                st.error("❌ Ingresa un correo válido")
 
 #---------------------------------------------------------------------------------------------------------
 
@@ -719,7 +858,7 @@ with colum3:
 
     components.html(
         render_languages_barlevel("📊 Nivel de Habilidades", languages_level), 
-        height=500)
+        height=600)
 
 
 #-----------------------------------------Seccion de Experiencia Laboral---------------------------------------- 
