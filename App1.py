@@ -1,76 +1,7 @@
 import streamlit as st
-
-#-----------------------CLASE PARA DISEÑO--------------------------
-#DESCRIPCION
-st.markdown("""
-<style>
-.card {
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0);
-    transition: transform 0.5s ease, box-shadow 0.5s ease;
-}
-.card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-    background-color: #FFFFFF;
-}
-</style>
-""", unsafe_allow_html=True)
-
-#TRABAJOS
-st.markdown("""
-<style>
-.card_jobs{
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0);
-    transition: transform 0.5s ease, box-shadow 0.5s ease;
-}
-.card_jobs:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-    background-color: #F0FDF4;
-}
-</style>
-""", unsafe_allow_html=True)
-
-#HABILIDADES
-st.markdown("""
-<style>
-.card_skills{
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0);
-    transition: transform 0.5s ease, box-shadow 0.5s ease;
-}
-.card_skills:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-    background-color: #EEF1F5;
-}
-</style>
-""", unsafe_allow_html=True)
-
-#IDIOMAS
-st.markdown("""
-<style>
-.card_language{
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0);
-    transition: transform 0.5s ease, box-shadow 0.5s ease;
-}
-.card_language:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-    background-color: #EEF2FF;
-}
-</style>
-""", unsafe_allow_html=True)
-
-#----------------------------------------
-
+import streamlit.components.v1 as components
+import os
+import base64
 
 #----------Definicion de variables para tener todo mas estructurado.---------
 #Diseño de la pagina
@@ -92,15 +23,31 @@ with open(resume_file, "rb") as pdf_file:
 #------------------------------------------------------------------------------------------------------------
 
 
+#------------FUNCION PYTON CON HTML, Creamos una funcion para ajustar los items y mandarlos a imprimir con diseño en html----------------------------------------
+languages_programacion = [
+    "☕ Java", "🐍 Python", "⚡JavaScript", "⚙ C++","🗄️ SQL", "📱 Kotlin", "🎨 HTML/CSS"
+]
+
+def render_languages(title, langs):
+    items = "".join([f"<li>{lang}</li>" for lang in langs])
+
+    return f"""
+    <div class="card_skills">
+        <h3>{title}</h3>
+        <ul>{items}</ul>
+    </div>
+    """
+
+#-------------------------------------------------------------Backend Habilidades-----------------------------------------------------------------------------------------------------------
 #--------------Habilidades - Arrays solo para iterar las posiciones e imprimirlas -------------------------
 habilidades_tecnicas = [
-    "Java | JavaScript | C++ | SQL | Kotlin | HTML/CSS",
     "Desarrollo Frond End con Python y Streamlit",
-    "Manejo de estructuras de datos y lógica de programación"]
+    "Manejo de estructuras de datos y lógica de programación",
+    "Pruebas funcionales (QA básico)"]
 skills_tech_html = "".join([f"<li>{stech}</li>" for stech in habilidades_tecnicas])
 
+
 habilidades_profesionales = [
-    "Trabajo en equipo",
     "Adaptabilidad",
     "Aprendizaje continuo",
     "Trabajo bajo presión"
@@ -109,8 +56,8 @@ skills_prof_html = "".join([f"<li>{sprof}</li>" for sprof in habilidades_profesi
 
 habilidades_competencias = [
     "Resolución de problemas",
-    "Análisis de requerimientos",
-    "Pruebas funcionales (QA básico)"
+    "Trabajo en equipo",
+    "Análisis de requerimientos"
 ]
 skills_html = "".join([f"<li>{slls}</li>" for slls in habilidades_competencias])
 
@@ -119,6 +66,373 @@ idiomas = [
     "Ingles - B2"
 ]
 languages_html = "".join([f"<p>{leng}</p>" for leng in idiomas])
+
+#-------------------------------------------------------------Backend Barra de lenguajes-----------------------------------------------------------------------------------------------------------
+
+languages_level= {
+    "Java": 78,
+    "Python": 74,
+    "JavaScript": 70,
+    "C++": 75,
+    "SQL": 70,
+    "Kotlin": 70,
+    "HTML/CSS": 70
+}
+
+def render_languages_barlevel(title, level):
+    items = ""
+
+    for skill, levels in level.items():
+        items += f"""
+        <div class = "skill">
+            <div class="skill-header"> 
+                <span>{skill}</span>
+            </div>
+            <div class = "bar">
+                <div class="fill" style="--level:{levels}%"></div>
+            </div> 
+        </div>
+        """
+        
+    html = f"""
+    <style>
+    .card {{
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0);
+        transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }}
+
+    .card:hover {{
+        transform: translateY(-10px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+        background: linear-gradient(135deg, #d4e6ff, #ffffff);
+        color: #2c5a7a;
+        border: 1px solid rgba(76, 158, 237, 0.2);
+    }}
+
+    .skill {{
+        margin-bottom: 15px;
+    }}
+
+    .skill-header {{
+        font-size: 14px;
+        margin-bottom: 5px;
+    }}
+
+    .bar {{
+        width: 100%;
+        height: 6px;
+        background-color: #e5e7eb;
+        border-radius: 5px;
+        overflow: hidden;
+    }}
+
+    .fill {{
+        height: 100%;
+        background: linear-gradient(90deg, #6366f1, #8b5cf6);
+        border-radius: 5px;
+        transition: width 1s ease-in-out;
+        animation: grow 10s ease forwards;
+    }}
+    @keyframes grow {{
+        from {{ width: 0; }}
+        to {{width: var(--level); }}
+    }}
+    </style>
+
+    <div class="card">
+        <h3>{title}</h3>
+        {items}
+    </div>
+    """
+    return html
+
+#-------------------------------------------------------------Backend Proyectos-----------------------------------------------------------------------------------------------------------
+projects = [
+    {
+        "title": "🌱 EcoFlow",
+        "desc": "Sistema de riego inteligente controlado desde app Android, con monitoreo continuo mediante sensores, consulta de clima en tiempo real mediante APIs y comunicación Bluetooth con el dispositivo..",
+        "tech": "Kotlin, C++, APIs, Bluetooth",
+        "image": "archivos/logoriegohd.png",
+        "link": "https://github.com/arathsam/EcoFlow.git"
+    },
+    {
+        "title": "🎸 App de Aprendizaje Musical",
+        "desc": "App Android para aprendizaje de instrumentos de cuerda con lecciones interactivas, simulación de guitarra, tablaturas de escalas y afinador digital basado en análisis de frecuencia.",
+        "tech": "Java, XML, Android Studio",
+        "image": "archivos/sonus_vester.jpg",
+        "link": "#')"
+    },
+    {
+        "title": "🏋️ AppSport",
+        "desc": "App Android que permitía actualizar y sincronizar rutinas de entrenamiento (WOD) de forma remota para usuarios durante la pandemia de COVID-19.",
+        "tech": "Kotlin, XML, Android Studio",
+        "image": "#",
+        "link": "#')" 
+
+    },
+    {
+        "title": "📦 Sistema de Inventario",
+        "desc": "Aplicación de escritorio para control de productos, actualización de existencias y registro de movimientos de inventario.",
+        "tech": "Java, SQL",
+        "image": "#",
+        "link": "#')"
+
+    },
+    {
+        "title": "🏫 Sistema Escolar",
+        "desc": "Sistema para registro de estudiantes, materias y consulta de información académica.",
+        "tech": "Java, SQL",
+        "image": "#",
+        "link": "#')"
+    },
+    {
+        "title": "💳 Punto de Venta",
+        "desc": "Aplicación para gestión de venta de articulos con registro de usuarios y control de disponibilidad mediante base de datos.",
+        "tech": "JavaScript, SQL",
+        "image": "#",
+        "link": "#')"
+    }
+]
+
+#----------------------------------------Verifica si existe la imagen sino devuelve un fondo degradado----------------------------------------------------
+def get_base64_image(path):
+    import os
+    import base64
+
+    if not path or not os.path.exists(path):
+        return None
+
+    with open(path, "rb") as img:
+        return base64.b64encode(img.read()).decode()
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+def render_projects(projects):
+
+    cards = ""
+
+    #Duplicamos para efecto infinito
+    loop_projects = projects*8
+
+    for p in loop_projects:
+        #Verificar si las imagenes existen, sino usar un fondo degradado
+        #background = "linear-gradient(360deg, #87cffb, #f9d6a5)"
+        
+        img_base64 = get_base64_image(p.get("image"))
+        if img_base64:
+            image_html = f'<img src="data:image/png;base64,{img_base64}" />'
+        else:
+            image_html = '<div class="img-fallback"></div>'
+
+        
+        #Validar si tiene link o no los proyectos
+        project_link = p.get('link', '')
+        
+        has_link = bool(project_link and project_link.strip() and project_link !='#')
+
+        onclick = f"handleClick('{project_link}',this)"
+        
+        
+        cards += f"""
+        <div class="netflix-card" 
+        onclick="{onclick}">
+            <div class="img-top"> 
+                {image_html}
+            </div>
+            <div class="content">
+                <h3>{p['title']}</h3>
+                <p>{p['desc']}</p>
+                <span class="tech">Tecnologia: {p['tech']}</span>
+                {'' if has_link else '<span class="soon-badge">🚀 Próximamente </span>'}
+            </div>
+        </div>
+        """
+
+    html = f"""
+    <style>
+
+    .container {{
+        display: flex;
+        gap: 20px;
+        overflow-x: auto;
+        padding: 20px;
+        width: 100%;
+        scroll-behavior: smooth;
+        scroll-snap-type: x mandatory;
+    }}
+
+    .container:hover .track{{
+        animation-play-state: paused;
+    }}
+
+    .track{{
+        display: flex;
+        gap: 20px;
+        animation: scroll 320s linear infinite;
+        cursor: pointer;
+    }}
+
+
+    .netflix-card {{
+        flex: 0 0 250px;
+        height: 300px;
+        border-radius: 15px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }}
+
+    .netflix-card:hover {{
+        transform: scale(1.05) translateY(-5px);
+        max-height: 100%;
+        filter: brightness(1.08);
+
+        z-index: 10;
+    }}
+
+    .img-top{{
+        height: 140px;
+        overflow: hidden;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }}
+
+    .img-top img{{
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background: linear-gradient(
+            180deg,
+            #c09a6c, 
+            #f9d6a5
+        );
+    }}
+
+    .netflix-card:hover .img-top{{
+        transform: scale(1.05);
+    }}
+    
+    .content{{
+        background: linear-gradient(
+            360deg,
+            #c09a6c, 
+            #f9d6a5
+        );
+        height: 160px;
+        padding: 12px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }}
+
+    @keyframes scroll{{
+        0%{{
+            transform: translateX(0);
+        }}
+        100%{{
+            transform: translateX(-50%)
+        }}
+    }}
+
+    .content h3 {{
+        margin: 0;
+        font-size: 16px;
+        color: #1e4a76;
+    }}
+
+    .content p {{
+        font-size: 14px;
+        margin: 5px 0;
+        color: #334155;
+        line-height: 1.3;
+    }}
+
+    .tech {{
+        font-size: 13px;
+        color: #1e4a76;
+    }}
+
+    /*Scroll*/
+
+    
+
+    .container::-webkit-scrollbar-thumb {{
+        background: #4c9eed;
+        border-radius: 30px;
+    }}
+
+    .toast {{
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: linear-gradient(135deg, #1e4a76, #0f2c44);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 50px;
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        opacity: 0;
+        transition: all 0.3s ease;
+        z-index: 99999;
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255,255,255,0.2);
+        pointer-events: none;
+        white-space: nowrap;
+    }}
+
+    .toast.show {{
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }}
+    
+    </style>
+
+    <div id="toast" class="toast">
+        🚀 Proyecto próximamente en GitHub
+    </div>
+
+    <div class="container">
+        <div class="track">
+            {cards}
+        </div>
+    </div>
+
+    <script>
+    function showToast() {{
+        const toast = document.getElementById("toast");
+        toast.classList.add("show");
+        
+        setTimeout(() => {{
+            toast.classList.remove("show");
+        }}, 2500);
+    }}
+
+    function handleClick(link, element) {{
+        if (link && link !== "" && link !== "#") {{
+            window.open(link, "_blank");
+        }} else {{
+            showToast();
+            // Efecto de vibración suave en la card
+            event.currentTarget.style.transform = 'scale(0.98)';
+            setTimeout(() => {{
+                event.currentTarget.style.transform = '';
+            }}, 150);
+        }}
+    }}
+    </script>
+
+    """
+
+    return html
+
 #---------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -154,8 +468,127 @@ jabil_respons_html = "".join([f"<li>{j}</li>" for j in jabil_respons])
 #-----------------------------------------------------------------------------------------------------------------
 
 
-#-------Configuracion de la pagina---------
+
+
+
+
+
+#------------------------------------Configuracion de la pagina----------------------------------
 st.set_page_config(page_title=page_title, page_icon=page_icon, layout= layout)
+st.markdown(
+    """
+    <style>
+        /* ===== FONDO MODO CLARO ===== */
+
+        /* ===== FONDO MODO OSCURO ===== */
+
+        /* ===== CARDS - SIN FONDO POR DEFECTO ===== */
+        .card, .card_jobs, .card_skills, .card_language {
+            padding: 20px;
+            border-radius: 15px;
+            transition: transform 0.5s ease, box-shadow 0.5s ease, background 0.3s ease;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        /* ===== HOVER - CUANDO EL CURSOR PASA ===== */
+        .card:hover, .card_jobs:hover, .card_skills:hover, .card_language:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        /* ===== CARD DESCRIPCIÓN - HOVER ===== */
+        .card:hover {
+            background: linear-gradient(135deg, #fce5c1, #fff0e0);
+            color: #8b5a2b;
+        }
+
+        /* ===== CARD TRABAJOS - HOVER ===== */
+        .card_jobs:hover {
+            background: linear-gradient(135deg, #f3e5d8, #fdf8f2);
+            color: #8b5a2b;
+            transform: translateY(-8px) scale(1.02);
+        }
+
+        /* ===== CARD HABILIDADES - HOVER ===== */
+        .card_skills:hover {
+            background: linear-gradient(180deg, #d4e6ff, #ffffff);
+            color: #1e4a76;
+        }
+
+        /* ===== CARD IDIOMAS - HOVER ===== */
+        .card_language:hover {
+            background: linear-gradient(360deg, #e0efff, #ffffff);
+            color: #1e4a76;
+        }
+
+        /* ===== MODO OSCURO - CARDS SIN FONDO ===== */
+        html[data-theme="dark"] .card,
+        html[data-theme="dark"] .card_jobs,
+        html[data-theme="dark"] .card_skills,
+        html[data-theme="dark"] .card_language {
+            background: transparent;
+            color: #e2e8f0;
+        }
+
+        /* ===== MODO OSCURO - HOVER CON FONDO Y TEXTO NEGRO ===== */
+        html[data-theme="dark"] .card:hover {
+            background: linear-gradient(135deg, #fce5c1, #fff0e0);
+            color: #000000 !important;
+        }
+        html[data-theme="dark"] .card:hover * {
+            color: #000000 !important;
+        }
+
+        html[data-theme="dark"] .card_jobs:hover {
+            background: linear-gradient(135deg, #f3e5d8, #fdf8f2);
+            color: #000000 !important;
+        }
+        html[data-theme="dark"] .card_jobs:hover * {
+            color: #000000 !important;
+        }
+
+        html[data-theme="dark"] .card_skills:hover {
+            background: linear-gradient(180deg, #d4e6ff, #ffffff);
+            color: #000000 !important;
+        }
+        html[data-theme="dark"] .card_skills:hover * {
+            color: #000000 !important;
+        }
+
+        html[data-theme="dark"] .card_language:hover {
+            background: linear-gradient(360deg, #e0efff, #ffffff);
+            color: #000000 !important;
+        }
+        html[data-theme="dark"] .card_language:hover * {
+            color: #000000 !important;
+        }
+
+        /* ===== TÍTULOS Y TEXTOS EN MODO OSCURO ===== */
+        html[data-theme="dark"] h1,
+        html[data-theme="dark"] h2,
+        html[data-theme="dark"] h3,
+        html[data-theme="dark"] h4,
+        html[data-theme="dark"] p,
+        html[data-theme="dark"] li {
+            color: #e2e8f0;
+        }
+
+        /* ===== BARRAS DE PROGRESO MODO OSCURO ===== */
+        html[data-theme="dark"] .bar {
+            background-color: #334155 !important;
+        }
+
+        /* ===== SCROLLBAR MODO OSCURO ===== */
+        html[data-theme="dark"] ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        html[data-theme="dark"] ::-webkit-scrollbar-thumb {
+            background: #4c9eed;
+            border-radius: 10px;
+        }
+    </style>
+    """, unsafe_allow_html=True)
 
 st.markdown(""" 
             <div style = "text-align: center;"> 
@@ -230,10 +663,14 @@ with col2:
 
 #----Seccion de Habilidades-------------
 st.write("---")
-colum1, colum2, colum3 = st.columns(3)
-with colum2:
+co1, co2, co3 = st.columns([1,2,1])
+with co2:
     st.title("✨Habilidades✨")
-    st.markdown("---")
+    
+st.markdown("---")
+st.subheader("")
+
+colum1, colum2, colum3 = st.columns(3)
 
 #with colum1:
 #    st.markdown("# ")
@@ -244,14 +681,17 @@ with colum2:
 #        st.markdown(f"- {habilidad}")
 
 with colum1:
-    st.markdown("# ")
-    st.markdown("---")
     st.markdown(f""" 
                 <div class="card_skills">
                 
                 ## 💻 Técnicas
                 {skills_tech_html}
                 </div>""", unsafe_allow_html=True)
+    
+with colum1:
+    st.markdown(
+        render_languages("💻 Lenguajes de Programación",languages_programacion), unsafe_allow_html=True
+    )
 
 with colum2:
     st.markdown(f""" 
@@ -270,8 +710,6 @@ with colum2:
                 </div>""", unsafe_allow_html=True)
 
 with colum3:
-    st.markdown("# ")
-    st.markdown("---")
     st.markdown(f""" 
                 <div class="card_skills">
                 
@@ -279,12 +717,17 @@ with colum3:
                 {skills_prof_html}
                 </div> """,unsafe_allow_html=True)
 
-
+    components.html(
+        render_languages_barlevel("📊 Nivel de Habilidades", languages_level), 
+        height=500)
 
 
 #-----------------------------------------Seccion de Experiencia Laboral---------------------------------------- 
 st.write("---")
-st.title("💼 Experiencia Laboral 💼")
+co1, co2, co3 = st.columns([1,1,5])
+with co3:
+    st.title("💼 Experiencia Laboral 💼")
+st.write("---")
 
 colum1, colum2, colum3 = st.columns(3)
 
@@ -337,5 +780,13 @@ with colum3:
         {jabil_respons_html}
         </div>""", unsafe_allow_html=True)
 
+st.write("---")
+co1, co2, co3 = st.columns([1,3,1])
+with co2:
+    st.title("🚀 Proyectos Escolares Destacados 💡")
+st.write("---")
 
-
+components.html(
+    render_projects(projects),
+    height=350
+)
