@@ -690,24 +690,68 @@ col1 , col2 = st.columns([1,1.2], gap="medium")
 
 #Columna para poner de lado izquierdo
 #Agregamos una separacion para centrar la imagen en la columna del lado izquierdo
-
+img_base64 = get_base64_image(profile_pic)
 with col1:
     #----------------------Centramos la foto d eperfil con efecto de bordes-----------------------
-    st.markdown(
-        """
-        <div style="text-align: center; margin-bottom: 15px;">
-            <div style="width: 180px; width: 180px; 
-                height: 180px; 
-                margin: 0 auto;
-                border-radius: 50%;
-                overflow: hidden;
-                border: 3px solid #4c9eed;
-                box-shadow: 0 8px 20px rgba(76, 158, 237, 0.2);
-            </div>   
+    st.markdown(f"""
+    <style>
+    .profile-wrapper {{
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }}
+
+    .profile-pic {{
+        width: 340px;     /*  ancho del óvalo */
+        height: 400px;    /*  alto del óvalo */
+
+        border-radius: 80% / 20%;  /* forma ovalada */
+
+        padding: 6px;
+        
+        background: linear-gradient(
+            135deg,
+            #d1d5db,
+            #f3f4f6,
+            #e5e7eb
+        );
+        background-size: 400% 400%;
+        animation: borderMove 6s ease infinite;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }}
+
+    .profile-pic img {{
+        width: 100%;
+        height: 100%;
+        
+        border-radius: 80% / 20%;  /*  ligeramente menor para que se vea el borde */
+        object-fit: cover;
+    }}
+
+    /* 🔥 Glow + hover */
+    .profile-pic:hover {{
+        transform: scale(1.08);
+        box-shadow: 0 0 35px rgba(76,158,237,0.6);
+    }}
+
+    /* 🔥 Animación del borde */
+    @keyframes borderMove {{
+        0% {{ background-position: 0% 50%; }}
+        50% {{ background-position: 100% 50%; }}
+        100% {{ background-position: 0% 50%; }}
+    }}
+    </style>
+
+    <div class="profile-wrapper">
+        <div class="profile-pic">
+            <img src="data:image/png;base64,{img_base64}">
         </div>
-        """, unsafe_allow_html=True)
-    st.image(profile_pic, use_container_width=True)
-    st.markdown("</div></div>",unsafe_allow_html=True)
+    </div>
+    """, unsafe_allow_html=True)
     
     #-----------------Diseño y posicion de los botones---------------------------------
     st.markdown("""
