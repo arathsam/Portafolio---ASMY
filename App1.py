@@ -1,4 +1,4 @@
-import streamlit as st
+import streamlit as st 
 import streamlit.components.v1 as components
 import os
 import base64
@@ -10,7 +10,7 @@ page_title = "Portafolio de Proyectos | ASMY"
 page_icon = ":man_technologist:"
 
 #------Variables para la descripcion del portafolio---------------------
-profile_pic = "archivos/foto_perfil.jpg"
+profile_pic = "archivos/profile_img.jpg"
 resume_file = "archivos/Resume_asmy.pdf"
 resume_name = "ArathSamir_MuYee_Resume.pdf"
 
