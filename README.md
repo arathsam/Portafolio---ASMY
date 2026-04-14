@@ -115,7 +115,7 @@ streamlit
 
 ## 📸 Screenshots
 
-> <img width="2340" height="1472" alt="image" src="https://github.com/user-attachments/assets/3f2dc517-fa7a-403c-8e8f-6fdff4debab3" />
+> <img width="2322" height="1427" alt="image" src="https://github.com/user-attachments/assets/b14db2ab-cce4-4de0-9c77-ae28e60297c2" />
 > <img width="2422" height="1377" alt="image" src="https://github.com/user-attachments/assets/ca076ea8-b57e-4a79-b5dc-2ddfecdb1fc3" />
 > <img width="2370" height="873" alt="image" src="https://github.com/user-attachments/assets/baba4abc-29a8-49b9-9f0b-52875d58b08b" />
 > <img width="2349" height="919" alt="image" src="https://github.com/user-attachments/assets/3056228f-6084-49a7-b413-58bfe6015edb" />
