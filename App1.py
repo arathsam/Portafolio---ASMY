@@ -10,7 +10,7 @@ page_title = "Portafolio de Proyectos | ASMY"
 page_icon = ":man_technologist:"
 
 #------Variables para la descripcion del portafolio---------------------
-profile_pic = "archivos/profile_img.jpg"
+profile_pic = "archivos/ia_me.png"
 resume_file = "archivos/Resume_asmy.pdf"
 resume_name = "ArathSamir_MuYee_Resume.pdf"
 
@@ -702,8 +702,8 @@ with col1:
     }}
 
     .profile-pic {{
-        width: 340px;     /*  ancho del óvalo */
-        height: 400px;    /*  alto del óvalo */
+        width: 470px;     /*  ancho del óvalo */
+        height: 500px;    /*  alto del óvalo */
 
         border-radius: 80% / 20%;  /* forma ovalada */
 
